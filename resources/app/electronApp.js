@@ -114,7 +114,7 @@ ipcMain.on('translate-snippet', async (event, { code, lang }) => {
 
 	const client = new OpenAI({
 		baseURL: "https://openrouter.ai/api/v1",
-		apiKey: "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",
+		apiKey: "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",
 	});
 
 
