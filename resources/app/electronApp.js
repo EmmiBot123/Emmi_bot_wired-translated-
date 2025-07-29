@@ -19,6 +19,8 @@ global.FormData = require('formdata-node').FormData;
 global.File = require('formdata-node').File;
 global.Blob = require('fetch-blob');
 global.AbortController = require('abort-controller');
+const dotenvPath = path.join(__dirname, '.env'); // path relative to main.js
+require('dotenv').config({ path: dotenvPath });
 const { OpenAI } = require('openai');
 
 var mainWindow
@@ -41,6 +43,8 @@ function createWindow() {
 	} else {
 		mainWindow.loadURL("file://" + path.join(__dirname, '../../www/index.html'))
 	}
+	mainWindow.webContents.openDevTools({ mode: 'detach' });
+
 	mainWindow.setMenu(null)
 	mainWindow.on('closed', function () {
 		mainWindow = null
@@ -114,9 +118,8 @@ ipcMain.on('translate-snippet', async (event, { code, lang }) => {
 
 	const client = new OpenAI({
 		baseURL: "https://openrouter.ai/api/v1",
-		apiKey: "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",
+		apiKey: process.env.OPENAI_API_KEY,
 	});
-
 
 	try {
 		const res = await client.chat.completions.create({
